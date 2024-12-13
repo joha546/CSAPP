@@ -2,8 +2,6 @@
  * CS:APP Data Lab 
  * 
  * <Please put your name and userid here>
- * Name : Md Khaled Bin Joha
- * ID : 0822220105101052
  * 
  * bits.c - Source file with your solutions to the Lab.
  *          This is the file you will hand in to your instructor.
@@ -145,12 +143,8 @@ NOTES:
  *   Rating: 1
  */
 int bitXor(int x, int y) {
-      int result;
-	  result = ~(~(x & ~y) & ~(~x & y));
-      return result;
+  return 2;
 }
-
-
 /* 
  * tmin - return minimum two's complement integer 
  *   Legal ops: ! ~ & ^ | + << >>
@@ -158,9 +152,8 @@ int bitXor(int x, int y) {
  *   Rating: 1
  */
 int tmin(void) {
-    int result;
-	result = 1 << 31;
-    return result;
+
+  return 2;
 
 }
 //2
@@ -172,8 +165,6 @@ int tmin(void) {
  *   Rating: 1
  */
 int isTmax(int x) {
-    int result;
-	result = !((x + 1) ^ (~x)) & !!(~x);
   return 2;
 }
 /* 
@@ -185,14 +176,7 @@ int isTmax(int x) {
  *   Rating: 2
  */
 int allOddBits(int x) {
-    int mask, result;
-	mask = 0xAA;
-	mask = (mask << 8) + 0xAA;
-	mask = (mask << 8) + 0xAA;
-	mask = (mask << 8) + 0xAA;
-	result = !((x & mask) ^ mask);
-
-  return result;
+  return 2;
 }
 /* 
  * negate - return -x 
