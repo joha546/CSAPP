@@ -143,7 +143,7 @@ NOTES:
  *   Rating: 1
  */
 int bitXor(int x, int y) {
-  return 2;
+    return ~(~x & ~y) & ~(x & y);
 }
 /* 
  * tmin - return minimum two's complement integer 
@@ -153,7 +153,7 @@ int bitXor(int x, int y) {
  */
 int tmin(void) {
 
-  return 2;
+    return 1 << 31;
 
 }
 //2
@@ -165,7 +165,9 @@ int tmin(void) {
  *   Rating: 1
  */
 int isTmax(int x) {
-  return 2;
+    int plusone = x+1;
+    int check = x + plusone;
+    return !check & !!plusone;
 }
 /* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
@@ -176,8 +178,10 @@ int isTmax(int x) {
  *   Rating: 2
  */
 int allOddBits(int x) {
-  return 2;
+    int mask = 0xAAAAAAAA; // 32-bit mask with all odd bits set
+    return !((x & mask) ^ mask);
 }
+
 /* 
  * negate - return -x 
  *   Example: negate(1) = -1.
@@ -186,7 +190,7 @@ int allOddBits(int x) {
  *   Rating: 2
  */
 int negate(int x) {
-  return 2;
+    return ~x + 1;
 }
 //3
 /* 
@@ -199,7 +203,9 @@ int negate(int x) {
  *   Rating: 3
  */
 int isAsciiDigit(int x) {
-  return 2;
+    int lowerBound = x + ~0x30 + 1; // x - 0x30
+    int upperBound = 0x39 + ~x + 1; // 0x39 - x
+    return !(lowerBound >> 31) & !(upperBound >> 31);
 }
 /* 
  * conditional - same as x ? y : z 
@@ -209,7 +215,8 @@ int isAsciiDigit(int x) {
  *   Rating: 3
  */
 int conditional(int x, int y, int z) {
-  return 2;
+    int mask = ~(!x) + 1; // Mask: 0xFFFFFFFF if x is true, 0 otherwise
+    return (mask & y) | (~mask & z);
 }
 /* 
  * isLessOrEqual - if x <= y  then return 1, else return 0 
@@ -219,7 +226,11 @@ int conditional(int x, int y, int z) {
  *   Rating: 3
  */
 int isLessOrEqual(int x, int y) {
-  return 2;
+    int diffSign = ((x ^ y) >> 31) & 1;    // Check if x and y have different signs
+    int xNeg = (x >> 31) & 1;             // x is negative
+    int diff = y + ~x + 1;                // y - x
+    int diffNonNeg = !(diff >> 31);       // Check if y - x >= 0
+    return (diffSign & xNeg) | (!diffSign & diffNonNeg);
 }
 //4
 /* 
@@ -231,7 +242,7 @@ int isLessOrEqual(int x, int y) {
  *   Rating: 4 
  */
 int logicalNeg(int x) {
-  return 2;
+  return ((x | (~x + 1)) >> 31) + 1;;
 }
 /* howManyBits - return the minimum number of bits required to represent x in
  *             two's complement
@@ -246,7 +257,15 @@ int logicalNeg(int x) {
  *  Rating: 4
  */
 int howManyBits(int x) {
-  return 0;
+    int mask = x >> 31;           // Sign-extend x
+    x = (x ^ mask);               // If x is negative, flip its bits
+    int b16 = !!(x >> 16) << 4;   // Check the top 16 bits
+    int b8 = !!(x >> (8 + b16)) << 3;
+    int b4 = !!(x >> (4 + b16 + b8)) << 2;
+    int b2 = !!(x >> (2 + b16 + b8 + b4)) << 1;
+    int b1 = !!(x >> (1 + b16 + b8 + b4 + b2));
+    int b0 = x >> (b16 + b8 + b4 + b2 + b1);
+    return b16 + b8 + b4 + b2 + b1 + b0 + 1;
 }
 //float
 /* 
@@ -261,7 +280,14 @@ int howManyBits(int x) {
  *   Rating: 4
  */
 unsigned floatScale2(unsigned uf) {
-  return 2;
+    unsigned sign = uf & 0x80000000;
+    unsigned exp = (uf >> 23) & 0xFF;
+    unsigned frac = uf & 0x7FFFFF;
+    if (exp == 0xFF) return uf; // NaN or Infinity
+    if (exp == 0) return sign | (frac << 1); // Denormalized
+    exp++;
+    if (exp == 0xFF) return sign | 0x7F800000; // Overflow to Infinity
+    return sign | (exp << 23) | frac;
 }
 /* 
  * floatFloat2Int - Return bit-level equivalent of expression (int) f
@@ -276,7 +302,14 @@ unsigned floatScale2(unsigned uf) {
  *   Rating: 4
  */
 int floatFloat2Int(unsigned uf) {
-  return 2;
+    int sign = (uf >> 31) & 1;
+    int exp = ((uf >> 23) & 0xFF) - 127;
+    int frac = (uf & 0x7FFFFF) | 0x800000;
+    if (exp < 0) return 0;
+    if (exp > 31) return 0x80000000;
+    int result = frac >> (23 - exp);
+    if (sign) result = -result;
+    return result;
 }
 /* 
  * floatPower2 - Return bit-level equivalent of the expression 2.0^x
@@ -292,5 +325,7 @@ int floatFloat2Int(unsigned uf) {
  *   Rating: 4
  */
 unsigned floatPower2(int x) {
-    return 2;
+    if (x < -126) return 0; // Too small
+    if (x > 127) return 0x7F800000; // Infinity
+    return (x + 127) << 23;
 }
