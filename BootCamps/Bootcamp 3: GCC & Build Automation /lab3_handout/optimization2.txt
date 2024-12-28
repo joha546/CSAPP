@@ -1,0 +1,370 @@
+
+optimization2:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+0000000000001000 <_init>:
+    1000:	48 83 ec 08          	sub    $0x8,%rsp
+    1004:	48 8b 05 c5 2f 00 00 	mov    0x2fc5(%rip),%rax        # 3fd0 <__gmon_start__@Base>
+    100b:	48 85 c0             	test   %rax,%rax
+    100e:	74 02                	je     1012 <_init+0x12>
+    1010:	ff d0                	call   *%rax
+    1012:	48 83 c4 08          	add    $0x8,%rsp
+    1016:	c3                   	ret
+
+Disassembly of section .plt:
+
+0000000000001020 <clock@plt-0x10>:
+    1020:	ff 35 ca 2f 00 00    	push   0x2fca(%rip)        # 3ff0 <_GLOBAL_OFFSET_TABLE_+0x8>
+    1026:	ff 25 cc 2f 00 00    	jmp    *0x2fcc(%rip)        # 3ff8 <_GLOBAL_OFFSET_TABLE_+0x10>
+    102c:	0f 1f 40 00          	nopl   0x0(%rax)
+
+0000000000001030 <clock@plt>:
+    1030:	ff 25 ca 2f 00 00    	jmp    *0x2fca(%rip)        # 4000 <clock@GLIBC_2.2.5>
+    1036:	68 00 00 00 00       	push   $0x0
+    103b:	e9 e0 ff ff ff       	jmp    1020 <_init+0x20>
+
+0000000000001040 <printf@plt>:
+    1040:	ff 25 c2 2f 00 00    	jmp    *0x2fc2(%rip)        # 4008 <printf@GLIBC_2.2.5>
+    1046:	68 01 00 00 00       	push   $0x1
+    104b:	e9 d0 ff ff ff       	jmp    1020 <_init+0x20>
+
+Disassembly of section .plt.got:
+
+0000000000001050 <__cxa_finalize@plt>:
+    1050:	ff 25 8a 2f 00 00    	jmp    *0x2f8a(%rip)        # 3fe0 <__cxa_finalize@GLIBC_2.2.5>
+    1056:	66 90                	xchg   %ax,%ax
+
+Disassembly of section .text:
+
+0000000000001060 <main>:
+    1060:	53                   	push   %rbx
+    1061:	e8 ca ff ff ff       	call   1030 <clock@plt>
+    1066:	bf 19 00 00 00       	mov    $0x19,%edi
+    106b:	48 89 c3             	mov    %rax,%rbx
+    106e:	e8 3d 01 00 00       	call   11b0 <fibonacci>
+    1073:	be 19 00 00 00       	mov    $0x19,%esi
+    1078:	48 8d 3d e6 0f 00 00 	lea    0xfe6(%rip),%rdi        # 2065 <_IO_stdin_used+0x65>
+    107f:	89 c2                	mov    %eax,%edx
+    1081:	31 c0                	xor    %eax,%eax
+    1083:	e8 b8 ff ff ff       	call   1040 <printf@plt>
+    1088:	e8 a3 ff ff ff       	call   1030 <clock@plt>
+    108d:	66 0f ef c0          	pxor   %xmm0,%xmm0
+    1091:	48 8d 3d 98 0f 00 00 	lea    0xf98(%rip),%rdi        # 2030 <_IO_stdin_used+0x30>
+    1098:	48 29 d8             	sub    %rbx,%rax
+    109b:	f2 48 0f 2a c0       	cvtsi2sd %rax,%xmm0
+    10a0:	b8 02 00 00 00       	mov    $0x2,%eax
+    10a5:	66 0f 28 c8          	movapd %xmm0,%xmm1
+    10a9:	f2 0f 5e 0d c7 0f 00 	divsd  0xfc7(%rip),%xmm1        # 2078 <_IO_stdin_used+0x78>
+    10b0:	00 
+    10b1:	e8 8a ff ff ff       	call   1040 <printf@plt>
+    10b6:	31 c0                	xor    %eax,%eax
+    10b8:	5b                   	pop    %rbx
+    10b9:	c3                   	ret
+    10ba:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
+
+00000000000010c0 <_start>:
+    10c0:	31 ed                	xor    %ebp,%ebp
+    10c2:	49 89 d1             	mov    %rdx,%r9
+    10c5:	5e                   	pop    %rsi
+    10c6:	48 89 e2             	mov    %rsp,%rdx
+    10c9:	48 83 e4 f0          	and    $0xfffffffffffffff0,%rsp
+    10cd:	50                   	push   %rax
+    10ce:	54                   	push   %rsp
+    10cf:	45 31 c0             	xor    %r8d,%r8d
+    10d2:	31 c9                	xor    %ecx,%ecx
+    10d4:	48 8d 3d 85 ff ff ff 	lea    -0x7b(%rip),%rdi        # 1060 <main>
+    10db:	ff 15 df 2e 00 00    	call   *0x2edf(%rip)        # 3fc0 <__libc_start_main@GLIBC_2.34>
+    10e1:	f4                   	hlt
+    10e2:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
+    10e9:	00 00 00 
+    10ec:	0f 1f 40 00          	nopl   0x0(%rax)
+
+00000000000010f0 <deregister_tm_clones>:
+    10f0:	48 8d 3d 29 2f 00 00 	lea    0x2f29(%rip),%rdi        # 4020 <__TMC_END__>
+    10f7:	48 8d 05 22 2f 00 00 	lea    0x2f22(%rip),%rax        # 4020 <__TMC_END__>
+    10fe:	48 39 f8             	cmp    %rdi,%rax
+    1101:	74 15                	je     1118 <deregister_tm_clones+0x28>
+    1103:	48 8b 05 be 2e 00 00 	mov    0x2ebe(%rip),%rax        # 3fc8 <_ITM_deregisterTMCloneTable@Base>
+    110a:	48 85 c0             	test   %rax,%rax
+    110d:	74 09                	je     1118 <deregister_tm_clones+0x28>
+    110f:	ff e0                	jmp    *%rax
+    1111:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+    1118:	c3                   	ret
+    1119:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+
+0000000000001120 <register_tm_clones>:
+    1120:	48 8d 3d f9 2e 00 00 	lea    0x2ef9(%rip),%rdi        # 4020 <__TMC_END__>
+    1127:	48 8d 35 f2 2e 00 00 	lea    0x2ef2(%rip),%rsi        # 4020 <__TMC_END__>
+    112e:	48 29 fe             	sub    %rdi,%rsi
+    1131:	48 89 f0             	mov    %rsi,%rax
+    1134:	48 c1 ee 3f          	shr    $0x3f,%rsi
+    1138:	48 c1 f8 03          	sar    $0x3,%rax
+    113c:	48 01 c6             	add    %rax,%rsi
+    113f:	48 d1 fe             	sar    $1,%rsi
+    1142:	74 14                	je     1158 <register_tm_clones+0x38>
+    1144:	48 8b 05 8d 2e 00 00 	mov    0x2e8d(%rip),%rax        # 3fd8 <_ITM_registerTMCloneTable@Base>
+    114b:	48 85 c0             	test   %rax,%rax
+    114e:	74 08                	je     1158 <register_tm_clones+0x38>
+    1150:	ff e0                	jmp    *%rax
+    1152:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
+    1158:	c3                   	ret
+    1159:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+
+0000000000001160 <__do_global_dtors_aux>:
+    1160:	f3 0f 1e fa          	endbr64
+    1164:	80 3d b5 2e 00 00 00 	cmpb   $0x0,0x2eb5(%rip)        # 4020 <__TMC_END__>
+    116b:	75 2b                	jne    1198 <__do_global_dtors_aux+0x38>
+    116d:	55                   	push   %rbp
+    116e:	48 83 3d 6a 2e 00 00 	cmpq   $0x0,0x2e6a(%rip)        # 3fe0 <__cxa_finalize@GLIBC_2.2.5>
+    1175:	00 
+    1176:	48 89 e5             	mov    %rsp,%rbp
+    1179:	74 0c                	je     1187 <__do_global_dtors_aux+0x27>
+    117b:	48 8b 3d 96 2e 00 00 	mov    0x2e96(%rip),%rdi        # 4018 <__dso_handle>
+    1182:	e8 c9 fe ff ff       	call   1050 <__cxa_finalize@plt>
+    1187:	e8 64 ff ff ff       	call   10f0 <deregister_tm_clones>
+    118c:	c6 05 8d 2e 00 00 01 	movb   $0x1,0x2e8d(%rip)        # 4020 <__TMC_END__>
+    1193:	5d                   	pop    %rbp
+    1194:	c3                   	ret
+    1195:	0f 1f 00             	nopl   (%rax)
+    1198:	c3                   	ret
+    1199:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+
+00000000000011a0 <frame_dummy>:
+    11a0:	f3 0f 1e fa          	endbr64
+    11a4:	e9 77 ff ff ff       	jmp    1120 <register_tm_clones>
+    11a9:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+
+00000000000011b0 <fibonacci>:
+    11b0:	41 57                	push   %r15
+    11b2:	41 56                	push   %r14
+    11b4:	45 31 f6             	xor    %r14d,%r14d
+    11b7:	41 55                	push   %r13
+    11b9:	41 54                	push   %r12
+    11bb:	55                   	push   %rbp
+    11bc:	8d 6f ff             	lea    -0x1(%rdi),%ebp
+    11bf:	53                   	push   %rbx
+    11c0:	48 83 ec 58          	sub    $0x58,%rsp
+    11c4:	31 c0                	xor    %eax,%eax
+    11c6:	8d 5d 01             	lea    0x1(%rbp),%ebx
+    11c9:	e8 02 03 00 00       	call   14d0 <helper_func>
+    11ce:	89 da                	mov    %ebx,%edx
+    11d0:	48 8d 3d 31 0e 00 00 	lea    0xe31(%rip),%rdi        # 2008 <_IO_stdin_used+0x8>
+    11d7:	89 c6                	mov    %eax,%esi
+    11d9:	31 c0                	xor    %eax,%eax
+    11db:	e8 60 fe ff ff       	call   1040 <printf@plt>
+    11e0:	83 fb 01             	cmp    $0x1,%ebx
+    11e3:	0f 8e b1 02 00 00    	jle    149a <fibonacci+0x2ea>
+    11e9:	44 89 74 24 1c       	mov    %r14d,0x1c(%rsp)
+    11ee:	45 31 e4             	xor    %r12d,%r12d
+    11f1:	89 eb                	mov    %ebp,%ebx
+    11f3:	45 89 e5             	mov    %r12d,%r13d
+    11f6:	31 c0                	xor    %eax,%eax
+    11f8:	e8 d3 02 00 00       	call   14d0 <helper_func>
+    11fd:	89 da                	mov    %ebx,%edx
+    11ff:	48 8d 3d 02 0e 00 00 	lea    0xe02(%rip),%rdi        # 2008 <_IO_stdin_used+0x8>
+    1206:	89 c6                	mov    %eax,%esi
+    1208:	31 c0                	xor    %eax,%eax
+    120a:	e8 31 fe ff ff       	call   1040 <printf@plt>
+    120f:	83 fb 01             	cmp    $0x1,%ebx
+    1212:	0f 8e 95 02 00 00    	jle    14ad <fibonacci+0x2fd>
+    1218:	8d 43 ff             	lea    -0x1(%rbx),%eax
+    121b:	c7 44 24 14 00 00 00 	movl   $0x0,0x14(%rsp)
+    1222:	00 
+    1223:	89 5c 24 20          	mov    %ebx,0x20(%rsp)
+    1227:	41 89 c7             	mov    %eax,%r15d
+    122a:	89 6c 24 24          	mov    %ebp,0x24(%rsp)
+    122e:	89 44 24 28          	mov    %eax,0x28(%rsp)
+    1232:	31 c0                	xor    %eax,%eax
+    1234:	e8 97 02 00 00       	call   14d0 <helper_func>
+    1239:	44 89 fa             	mov    %r15d,%edx
+    123c:	48 8d 3d c5 0d 00 00 	lea    0xdc5(%rip),%rdi        # 2008 <_IO_stdin_used+0x8>
+    1243:	89 c6                	mov    %eax,%esi
+    1245:	31 c0                	xor    %eax,%eax
+    1247:	e8 f4 fd ff ff       	call   1040 <printf@plt>
+    124c:	41 83 ff 01          	cmp    $0x1,%r15d
+    1250:	0f 8e 24 02 00 00    	jle    147a <fibonacci+0x2ca>
+    1256:	41 8d 47 ff          	lea    -0x1(%r15),%eax
+    125a:	c7 44 24 18 00 00 00 	movl   $0x0,0x18(%rsp)
+    1261:	00 
+    1262:	44 89 7c 24 30       	mov    %r15d,0x30(%rsp)
+    1267:	89 44 24 34          	mov    %eax,0x34(%rsp)
+    126b:	44 89 6c 24 2c       	mov    %r13d,0x2c(%rsp)
+    1270:	41 89 c5             	mov    %eax,%r13d
+    1273:	31 c0                	xor    %eax,%eax
+    1275:	e8 56 02 00 00       	call   14d0 <helper_func>
+    127a:	44 89 ea             	mov    %r13d,%edx
+    127d:	48 8d 3d 84 0d 00 00 	lea    0xd84(%rip),%rdi        # 2008 <_IO_stdin_used+0x8>
+    1284:	89 c6                	mov    %eax,%esi
+    1286:	31 c0                	xor    %eax,%eax
+    1288:	e8 b3 fd ff ff       	call   1040 <printf@plt>
+    128d:	41 83 fd 01          	cmp    $0x1,%r13d
+    1291:	0f 8e bf 01 00 00    	jle    1456 <fibonacci+0x2a6>
+    1297:	41 8d 45 ff          	lea    -0x1(%r13),%eax
+    129b:	44 89 6c 24 38       	mov    %r13d,0x38(%rsp)
+    12a0:	45 31 f6             	xor    %r14d,%r14d
+    12a3:	89 44 24 3c          	mov    %eax,0x3c(%rsp)
+    12a7:	41 89 c4             	mov    %eax,%r12d
+    12aa:	45 89 f7             	mov    %r14d,%r15d
+    12ad:	31 c0                	xor    %eax,%eax
+    12af:	e8 1c 02 00 00       	call   14d0 <helper_func>
+    12b4:	44 89 e2             	mov    %r12d,%edx
+    12b7:	48 8d 3d 4a 0d 00 00 	lea    0xd4a(%rip),%rdi        # 2008 <_IO_stdin_used+0x8>
+    12be:	89 c6                	mov    %eax,%esi
+    12c0:	31 c0                	xor    %eax,%eax
+    12c2:	e8 79 fd ff ff       	call   1040 <printf@plt>
+    12c7:	41 83 fc 01          	cmp    $0x1,%r12d
+    12cb:	0f 8e 42 01 00 00    	jle    1413 <fibonacci+0x263>
+    12d1:	41 8d 5c 24 ff       	lea    -0x1(%r12),%ebx
+    12d6:	31 ed                	xor    %ebp,%ebp
+    12d8:	45 89 e5             	mov    %r12d,%r13d
+    12db:	41 89 ee             	mov    %ebp,%r14d
+    12de:	41 89 dc             	mov    %ebx,%r12d
+    12e1:	31 c0                	xor    %eax,%eax
+    12e3:	e8 e8 01 00 00       	call   14d0 <helper_func>
+    12e8:	44 89 e2             	mov    %r12d,%edx
+    12eb:	48 8d 3d 16 0d 00 00 	lea    0xd16(%rip),%rdi        # 2008 <_IO_stdin_used+0x8>
+    12f2:	89 c6                	mov    %eax,%esi
+    12f4:	31 c0                	xor    %eax,%eax
+    12f6:	e8 45 fd ff ff       	call   1040 <printf@plt>
+    12fb:	41 83 fc 01          	cmp    $0x1,%r12d
+    12ff:	0f 8e b8 00 00 00    	jle    13bd <fibonacci+0x20d>
+    1305:	41 8d 4c 24 ff       	lea    -0x1(%r12),%ecx
+    130a:	c7 44 24 04 00 00 00 	movl   $0x0,0x4(%rsp)
+    1311:	00 
+    1312:	44 89 6c 24 08       	mov    %r13d,0x8(%rsp)
+    1317:	89 cd                	mov    %ecx,%ebp
+    1319:	44 89 74 24 0c       	mov    %r14d,0xc(%rsp)
+    131e:	89 4c 24 10          	mov    %ecx,0x10(%rsp)
+    1322:	31 c0                	xor    %eax,%eax
+    1324:	e8 a7 01 00 00       	call   14d0 <helper_func>
+    1329:	89 ea                	mov    %ebp,%edx
+    132b:	48 8d 3d d6 0c 00 00 	lea    0xcd6(%rip),%rdi        # 2008 <_IO_stdin_used+0x8>
+    1332:	89 c6                	mov    %eax,%esi
+    1334:	31 c0                	xor    %eax,%eax
+    1336:	e8 05 fd ff ff       	call   1040 <printf@plt>
+    133b:	83 fd 01             	cmp    $0x1,%ebp
+    133e:	0f 8e ac 00 00 00    	jle    13f0 <fibonacci+0x240>
+    1344:	8d 45 ff             	lea    -0x1(%rbp),%eax
+    1347:	89 5c 24 48          	mov    %ebx,0x48(%rsp)
+    134b:	45 31 ed             	xor    %r13d,%r13d
+    134e:	89 44 24 4c          	mov    %eax,0x4c(%rsp)
+    1352:	44 89 64 24 40       	mov    %r12d,0x40(%rsp)
+    1357:	45 89 ec             	mov    %r13d,%r12d
+    135a:	89 6c 24 44          	mov    %ebp,0x44(%rsp)
+    135e:	89 c5                	mov    %eax,%ebp
+    1360:	31 c0                	xor    %eax,%eax
+    1362:	e8 69 01 00 00       	call   14d0 <helper_func>
+    1367:	89 ea                	mov    %ebp,%edx
+    1369:	48 8d 3d 98 0c 00 00 	lea    0xc98(%rip),%rdi        # 2008 <_IO_stdin_used+0x8>
+    1370:	89 c6                	mov    %eax,%esi
+    1372:	31 c0                	xor    %eax,%eax
+    1374:	e8 c7 fc ff ff       	call   1040 <printf@plt>
+    1379:	83 fd 01             	cmp    $0x1,%ebp
+    137c:	0f 8e ae 00 00 00    	jle    1430 <fibonacci+0x280>
+    1382:	8d 5d ff             	lea    -0x1(%rbp),%ebx
+    1385:	45 31 ed             	xor    %r13d,%r13d
+    1388:	41 89 de             	mov    %ebx,%r14d
+    138b:	31 c0                	xor    %eax,%eax
+    138d:	e8 3e 01 00 00       	call   14d0 <helper_func>
+    1392:	44 89 f2             	mov    %r14d,%edx
+    1395:	48 8d 3d 6c 0c 00 00 	lea    0xc6c(%rip),%rdi        # 2008 <_IO_stdin_used+0x8>
+    139c:	89 c6                	mov    %eax,%esi
+    139e:	31 c0                	xor    %eax,%eax
+    13a0:	e8 9b fc ff ff       	call   1040 <printf@plt>
+    13a5:	41 83 fe 01          	cmp    $0x1,%r14d
+    13a9:	7e 2d                	jle    13d8 <fibonacci+0x228>
+    13ab:	41 8d 7e ff          	lea    -0x1(%r14),%edi
+    13af:	41 83 ee 02          	sub    $0x2,%r14d
+    13b3:	e8 f8 fd ff ff       	call   11b0 <fibonacci>
+    13b8:	41 01 c5             	add    %eax,%r13d
+    13bb:	eb ce                	jmp    138b <fibonacci+0x1db>
+    13bd:	83 e3 01             	and    $0x1,%ebx
+    13c0:	45 89 ec             	mov    %r13d,%r12d
+    13c3:	42 8d 04 33          	lea    (%rbx,%r14,1),%eax
+    13c7:	41 83 ec 02          	sub    $0x2,%r12d
+    13cb:	41 01 c7             	add    %eax,%r15d
+    13ce:	e9 da fe ff ff       	jmp    12ad <fibonacci+0xfd>
+    13d3:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
+    13d8:	83 e3 01             	and    $0x1,%ebx
+    13db:	83 ed 02             	sub    $0x2,%ebp
+    13de:	42 8d 04 2b          	lea    (%rbx,%r13,1),%eax
+    13e2:	41 01 c4             	add    %eax,%r12d
+    13e5:	e9 76 ff ff ff       	jmp    1360 <fibonacci+0x1b0>
+    13ea:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
+    13f0:	8b 4c 24 10          	mov    0x10(%rsp),%ecx
+    13f4:	8b 44 24 04          	mov    0x4(%rsp),%eax
+    13f8:	41 83 ec 02          	sub    $0x2,%r12d
+    13fc:	44 8b 74 24 0c       	mov    0xc(%rsp),%r14d
+    1401:	44 8b 6c 24 08       	mov    0x8(%rsp),%r13d
+    1406:	83 e1 01             	and    $0x1,%ecx
+    1409:	01 c8                	add    %ecx,%eax
+    140b:	41 01 c6             	add    %eax,%r14d
+    140e:	e9 ce fe ff ff       	jmp    12e1 <fibonacci+0x131>
+    1413:	8b 44 24 3c          	mov    0x3c(%rsp),%eax
+    1417:	44 8b 6c 24 38       	mov    0x38(%rsp),%r13d
+    141c:	83 e0 01             	and    $0x1,%eax
+    141f:	41 83 ed 02          	sub    $0x2,%r13d
+    1423:	44 01 f8             	add    %r15d,%eax
+    1426:	01 44 24 18          	add    %eax,0x18(%rsp)
+    142a:	e9 44 fe ff ff       	jmp    1273 <fibonacci+0xc3>
+    142f:	90                   	nop
+    1430:	8b 44 24 4c          	mov    0x4c(%rsp),%eax
+    1434:	8b 6c 24 44          	mov    0x44(%rsp),%ebp
+    1438:	45 89 e5             	mov    %r12d,%r13d
+    143b:	8b 5c 24 48          	mov    0x48(%rsp),%ebx
+    143f:	44 8b 64 24 40       	mov    0x40(%rsp),%r12d
+    1444:	83 e0 01             	and    $0x1,%eax
+    1447:	83 ed 02             	sub    $0x2,%ebp
+    144a:	44 01 e8             	add    %r13d,%eax
+    144d:	01 44 24 04          	add    %eax,0x4(%rsp)
+    1451:	e9 cc fe ff ff       	jmp    1322 <fibonacci+0x172>
+    1456:	8b 44 24 34          	mov    0x34(%rsp),%eax
+    145a:	44 8b 7c 24 30       	mov    0x30(%rsp),%r15d
+    145f:	8b 7c 24 18          	mov    0x18(%rsp),%edi
+    1463:	44 8b 6c 24 2c       	mov    0x2c(%rsp),%r13d
+    1468:	83 e0 01             	and    $0x1,%eax
+    146b:	41 83 ef 02          	sub    $0x2,%r15d
+    146f:	01 f8                	add    %edi,%eax
+    1471:	01 44 24 14          	add    %eax,0x14(%rsp)
+    1475:	e9 b8 fd ff ff       	jmp    1232 <fibonacci+0x82>
+    147a:	8b 44 24 28          	mov    0x28(%rsp),%eax
+    147e:	8b 54 24 14          	mov    0x14(%rsp),%edx
+    1482:	8b 5c 24 20          	mov    0x20(%rsp),%ebx
+    1486:	8b 6c 24 24          	mov    0x24(%rsp),%ebp
+    148a:	83 e0 01             	and    $0x1,%eax
+    148d:	01 d0                	add    %edx,%eax
+    148f:	83 eb 02             	sub    $0x2,%ebx
+    1492:	41 01 c5             	add    %eax,%r13d
+    1495:	e9 5c fd ff ff       	jmp    11f6 <fibonacci+0x46>
+    149a:	48 83 c4 58          	add    $0x58,%rsp
+    149e:	42 8d 04 33          	lea    (%rbx,%r14,1),%eax
+    14a2:	5b                   	pop    %rbx
+    14a3:	5d                   	pop    %rbp
+    14a4:	41 5c                	pop    %r12
+    14a6:	41 5d                	pop    %r13
+    14a8:	41 5e                	pop    %r14
+    14aa:	41 5f                	pop    %r15
+    14ac:	c3                   	ret
+    14ad:	89 e8                	mov    %ebp,%eax
+    14af:	44 8b 74 24 1c       	mov    0x1c(%rsp),%r14d
+    14b4:	83 ed 02             	sub    $0x2,%ebp
+    14b7:	83 e0 01             	and    $0x1,%eax
+    14ba:	44 01 e8             	add    %r13d,%eax
+    14bd:	41 01 c6             	add    %eax,%r14d
+    14c0:	e9 ff fc ff ff       	jmp    11c4 <fibonacci+0x14>
+    14c5:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
+    14cc:	00 00 00 
+    14cf:	90                   	nop
+
+00000000000014d0 <helper_func>:
+    14d0:	b8 d5 00 00 00       	mov    $0xd5,%eax
+    14d5:	c3                   	ret
+
+Disassembly of section .fini:
+
+00000000000014d8 <_fini>:
+    14d8:	48 83 ec 08          	sub    $0x8,%rsp
+    14dc:	48 83 c4 08          	add    $0x8,%rsp
+    14e0:	c3                   	ret
